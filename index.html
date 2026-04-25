@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lava Jato da Sol!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🚗 Lava Jato da Sol - Seu carro merece o melhor!</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#preco">Preços</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h2>Seu Carro Merece o Melhor Cuidado</h2>
+            <p>Lavagem alta qualidade</p>
+            <button class="btn-primary" onclick="scrollToContato()">Agende Agora</button>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="servicos" class="servicos">
+        <div class="container">
+            <h2>Nossos Serviços</h2>
+            <div class="servicos-grid">
+                <div class="servico-card">
+                    <div class="servico-icon">🧼</div>
+                    <h3>Lavagem Básica</h3>
+                    <p>Limpeza externa completa com espuma/produtos de qualidade!</p>
+                </div>
+                <div class="servico-card">
+                    <div class="servico-icon">🛡️</div>
+                    <h3>Higienização Interna</h3>
+                    <p>Limpeza e aspiração completa do interior do seu carro.</p>
+                </div>
+                    <div class="servico-card">
+                    <div class="servico-icon">💯</div>
+                    <h3>Pacote Completo</h3>
+                    <p>Combinação dos serviços de lavagem e higienização.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabela de Preços -->
+    <section id="preco" class="precos">
+        <div class="container">
+            <h2>Tabela de Preços</h2>
+            <div class="preco-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lavagem Básica</td>
+                            <td>R$ 30,00</td>
+                        </tr>
+                        <tr>
+                            <td>Higienização Interna</td>
+                            <td>R$ 30,00</td>
+                        </tr>
+                        <tr>
+                            <td>Pacote Completo</td>
+                            <td>R$ 50,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="depoimentos">
+        <div class="container">
+            <h2>O Que Nossos Clientes Dizem</h2>
+            <div class="depoimentos-grid">
+                <div class="depoimento-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Excelente atendimento! Meu carro saiu impecável. Recomendo!"</p>
+                    <strong>- João Silva</strong>
+                </div>
+                <div class="depoimento-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Melhor lava jato da região. Atenção aos detalhes é impressionante."</p>
+                    <strong>- Maria Santos</strong>
+                </div>
+                <div class="depoimento-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Voltei para fazer o pacote completo! Vale muito a pena."</p>
+                    <strong>- Carlos Oliveira</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato / Formulário -->
+    <section id="contato" class="contato">
+        <div class="container">
+            <h2>Entre em Contato</h2>
+            <div class="contato-content">
+                <div class="info-box">
+                    <h3>📍 Localização</h3>
+                    <p>Rua dos Jesuítas, 223 - Igreja<br>Contagem, MG - Brasil</p>
+                    
+                    <h3>📞 Telefone</h3>
+                    <p><a href="tel:+5511999999999">(31) 99267-5735</a></p>
+                    
+                    <h3>📧 Email</h3>
+                    <p><a href="mailto:contato@lavajatopremium.com">miguelvalderedo2011@gmail.com</a></p>
+                    
+                    <h3>🕐 Horário</h3>
+                    <p><br>Domingo: 12:00 - 13:30</p>
+                </div>
+
+                <form class="formulario" onsubmit="enviarFormulario(event)">
+                    <h3>Agende seu Atendimento</h3>
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Seu nome">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" required placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="servico">Serviço Desejado</label>
+                        <select id="servico" name="servico" required>
+                            <option value="">Selecione um serviço</option>
+                            <option value="Lavagem Básica">Lavagem Básica</option>
+                            <option value="Higienização Interna">Higienização Interna</option>
+                            <option value="Pacote Completo">Pacote Completo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data">Data Desejada</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" rows="4" placeholder="Deixe uma mensagem..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Enviar Agendamento</button>
+                    <div id="mensagem-envio" class="mensagem-status"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Lava Jato da Sol. Todos os direitos reservados.</p>
+            <p>Desenvolvido com cuidado para seu carro.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
