@@ -5,7 +5,7 @@ function scrollToContato() {
 }
 
 // Função para enviar formulário
-function enviarFormulario(event) {
+async function enviarFormulario(event) {
     event.preventDefault();
 
     // Pegando os valores do formulário
@@ -35,6 +35,21 @@ function enviarFormulario(event) {
         return;
     }
 
+    if (!isSunday(data)) {
+        mostrarMensagem('Erro', 'Escolha um domingo para o agendamento.');
+        return;
+    }
+
+    if (quantidadeAgendamentosNoDia(data) >= 3) {
+        mostrarMensagem('Erro', 'Este domingo já atingiu 3 agendamentos. Escolha outro domingo.');
+        // Recarregar opções disponíveis
+        const selectData = document.getElementById('data');
+        if (selectData) {
+            popularDomingosDisponiveis(selectData);
+        }
+        return;
+    }
+
     const agendamento = {
         nome,
         email,
@@ -46,9 +61,12 @@ function enviarFormulario(event) {
         dataEnvio: new Date().toISOString()
     };
 
-    // Salvar localmente e enviar ao backend
+    const servidorOk = await enviarParaServidor(agendamento);
+    if (!servidorOk) {
+        return;
+    }
+
     salvarAgendamento(agendamento);
-    enviarParaServidor(agendamento);
 
     if (meioContato === 'whatsapp') {
         enviarPorWhatsApp(agendamento);
@@ -107,19 +125,27 @@ function salvarAgendamento(agendamento) {
 // Função para enviar o agendamento para o backend
 function enviarParaServidor(agendamento) {
     const url = 'http://localhost:3000/agendamentos';
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(agendamento)
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            console.warn('Servidor rejeitou o agendamento:', data.error || data);
+            mostrarMensagem('Erro', data.error || 'Erro ao enviar agendamento ao servidor.');
+            return false;
+        }
         console.log('Resposta do servidor:', data);
+        return true;
     })
     .catch(error => {
         console.warn('Não foi possível enviar o agendamento ao servidor:', error);
+        mostrarMensagem('Erro', 'Erro ao enviar agendamento ao servidor. Tente novamente mais tarde.');
+        return false;
     });
 }
 
@@ -159,6 +185,72 @@ function obterAgendamentos() {
     return JSON.parse(localStorage.getItem('agendamentos')) || [];
 }
 
+function isSunday(dataString) {
+    const [year, month, day] = dataString.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getDay() === 0;
+}
+
+function quantidadeAgendamentosNoDia(dataString) {
+    return obterAgendamentos().filter(agendamento => agendamento.data === dataString).length;
+}
+
+function getNextSunday() {
+    // Baseado no contexto: hoje é 24/04/2026
+    // Se 27/04 é segunda-feira, então 26/04 deve ser domingo
+    // Vamos verificar qual dia da semana é hoje e calcular corretamente
+
+    const hoje = new Date(2026, 3, 24); // Abril é mês 3 (0-indexed)
+    const diaSemana = hoje.getDay();
+
+    // Se hoje é domingo, retorna hoje
+    if (diaSemana === 0) {
+        return '2026-04-24';
+    }
+
+    // Caso contrário, calcula quantos dias até o próximo domingo
+    const diasAteDomingo = 7 - diaSemana;
+    const proximoDomingo = new Date(hoje);
+    proximoDomingo.setDate(hoje.getDate() + diasAteDomingo);
+
+    return proximoDomingo.toISOString().split('T')[0];
+}
+
+function popularDomingosDisponiveis(selectElement) {
+    // Limpar opções existentes exceto a primeira
+    while (selectElement.options.length > 1) {
+        selectElement.remove(1);
+    }
+
+    // Lista manual de domingos baseada no calendário correto
+    // Começando do primeiro domingo disponível: 26/04/2026
+    const domingosDisponiveis = [
+        '2026-04-26', // Primeiro domingo
+        '2026-05-03',
+        '2026-05-10',
+        '2026-05-17',
+        '2026-05-24',
+        '2026-05-31',
+        '2026-06-07',
+        '2026-06-14',
+        '2026-06-21',
+        '2026-06-28',
+        '2026-07-05',
+        '2026-07-12'
+    ];
+
+    for (const dataString of domingosDisponiveis) {
+        const vagasRestantes = 3 - quantidadeAgendamentosNoDia(dataString);
+
+        if (vagasRestantes > 0) {
+            const option = document.createElement('option');
+            option.value = dataString;
+            option.textContent = `${formatarData(dataString)} (${vagasRestantes} vaga${vagasRestantes > 1 ? 's' : ''} disponível${vagasRestantes > 1 ? 'is' : ''})`;
+            selectElement.appendChild(option);
+        }
+    }
+}
+
 // Função para formatar data em português
 function formatarData(data) {
     const opções = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -191,11 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Definir data mínima no input de data como hoje
-    const inputData = document.getElementById('data');
-    if (inputData) {
-        const hoje = new Date().toISOString().split('T')[0];
-        inputData.min = hoje;
+    // Popular seletor de data com domingos disponíveis
+    const selectData = document.getElementById('data');
+    if (selectData) {
+        popularDomingosDisponiveis(selectData);
     }
 
     // Adicionar efeito de scroll nas seções

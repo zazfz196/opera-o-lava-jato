@@ -428,6 +428,13 @@ table tbody tr:last-child td {
     cursor: pointer;
 }
 
+.input-note {
+    display: block;
+    margin-top: 0.5rem;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
 /* Mensagem de Status */
 .mensagem-status {
     margin-top: 1rem;

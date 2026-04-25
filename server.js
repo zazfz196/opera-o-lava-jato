@@ -39,6 +39,19 @@ function salvarAgendamento(agendamento) {
     fs.writeFileSync(storageFile, JSON.stringify(agendamentos, null, 2), 'utf8');
 }
 
+function isSunday(dataString) {
+    const [year, month, day] = dataString.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getDay() === 0;
+}
+
+function countAgendamentosNoDia(dataString) {
+    ensureStorageFile();
+    const json = fs.readFileSync(storageFile, 'utf8');
+    const agendamentos = JSON.parse(json || '[]');
+    return agendamentos.filter(agendamento => agendamento.data === dataString).length;
+}
+
 async function enviarEmail(agendamento) {
     if (!contatoConfig.smtp.auth.user || !contatoConfig.smtp.auth.pass) {
         return false;
@@ -70,6 +83,15 @@ app.post('/agendamentos', async (req, res) => {
 
     if (!agendamento || !agendamento.nome || !agendamento.email || !agendamento.telefone || !agendamento.servico || !agendamento.data) {
         return res.status(400).json({ error: 'Dados de agendamento incompletos.' });
+    }
+
+    if (!isSunday(agendamento.data)) {
+        return res.status(400).json({ error: 'Agendamentos disponíveis apenas aos domingos.' });
+    }
+
+    const reservas = countAgendamentosNoDia(agendamento.data);
+    if (reservas >= 3) {
+        return res.status(409).json({ error: 'Este domingo já atingiu 3 agendamentos. Escolha outro domingo.' });
     }
 
     agendamento.id = Date.now();

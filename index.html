@@ -166,8 +166,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="data">Data Desejada</label>
-                        <input type="date" id="data" name="data" required>
+                        <label for="data">Data Desejada (apenas domingos)</label>
+                        <select id="data" name="data" required>
+                            <option value="">Selecione um domingo</option>
+                        </select>
+                        <small class="input-note">Disponível apenas aos domingos. Máximo 3 agendamentos por domingo.</small>
                     </div>
 
                     <div class="form-group">
