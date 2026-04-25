@@ -12,12 +12,13 @@ function enviarFormulario(event) {
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
     const telefone = document.getElementById('telefone').value.trim();
+    const meioContato = document.getElementById('meioContato').value;
     const servico = document.getElementById('servico').value;
     const data = document.getElementById('data').value;
     const mensagem = document.getElementById('mensagem').value.trim();
 
     // Validação básica
-    if (!nome || !email || !telefone || !servico || !data) {
+    if (!nome || !email || !telefone || !meioContato || !servico || !data) {
         mostrarMensagem('Erro', 'Por favor, preencha todos os campos obrigatórios!');
         return;
     }
@@ -34,32 +35,29 @@ function enviarFormulario(event) {
         return;
     }
 
-    // Simulação de envio (em um projeto real, seria enviado para um servidor)
-    console.log('Agendamento:', {
+    const agendamento = {
         nome,
         email,
         telefone,
+        meioContato,
         servico,
         data,
         mensagem,
-        dataEnvio: new Date()
-    });
+        dataEnvio: new Date().toISOString()
+    };
 
-    // Simular sucesso após validação
+    // Salvar localmente e enviar ao backend
+    salvarAgendamento(agendamento);
+    enviarParaServidor(agendamento);
+
+    if (meioContato === 'whatsapp') {
+        enviarPorWhatsApp(agendamento);
+    } else if (meioContato === 'email') {
+        enviarPorEmail(agendamento);
+    }
+
     mostrarMensagem('Sucesso', 'Agendamento realizado com sucesso! Em breve entraremos em contato.');
-    
-    // Limpar formulário
     document.querySelector('.formulario').reset();
-
-    // Salvar no localStorage para referência
-    salvarAgendamento({
-        nome,
-        email,
-        telefone,
-        servico,
-        data,
-        mensagem
-    });
 }
 
 // Função para validar email
@@ -96,19 +94,63 @@ function mostrarMensagem(tipo, texto) {
 
 // Função para salvar agendamento no localStorage
 function salvarAgendamento(agendamento) {
-    // Pegar agendamentos já salvos ou criar array vazio
     let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-    
-    // Adicionar novo agendamento
     agendamentos.push({
         ...agendamento,
         id: Date.now(),
         dataCriacao: new Date().toLocaleString('pt-BR')
     });
-    
-    // Salvar no localStorage
     localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
     console.log('Agendamento salvo localmente:', agendamentos);
+}
+
+// Função para enviar o agendamento para o backend
+function enviarParaServidor(agendamento) {
+    const url = 'http://localhost:3000/agendamentos';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(agendamento)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Resposta do servidor:', data);
+    })
+    .catch(error => {
+        console.warn('Não foi possível enviar o agendamento ao servidor:', error);
+    });
+}
+
+// Função para enviar por WhatsApp quando selecionado
+function enviarPorWhatsApp(agendamento) {
+    const texto = `Olá! Gostaria de agendar um serviço:\n` +
+        `Serviço: ${agendamento.servico}\n` +
+        `Data: ${formatarData(agendamento.data)}\n` +
+        `Nome: ${agendamento.nome}\n` +
+        `Email: ${agendamento.email}\n` +
+        `Telefone: ${agendamento.telefone}\n` +
+        `Mensagem: ${agendamento.mensagem || 'Sem mensagem adicional'}`;
+
+    const numeroWhatsApp = '5531992675735'; // Número do agendamento solicitado
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`;
+    window.open(urlWhatsApp, '_blank');
+}
+
+function enviarPorEmail(agendamento) {
+    const emailDestino = 'contato@lavajatopremium.com'; // Substitua pelo seu email de contato
+    const assunto = 'Novo agendamento de lava jato';
+    const corpo = `Olá,%0D%0A%0D%0A` +
+        `Gostaria de agendar um serviço. Seguem os dados:%0D%0A%0D%0A` +
+        `Nome: ${agendamento.nome}%0D%0A` +
+        `Email: ${agendamento.email}%0D%0A` +
+        `Telefone: ${agendamento.telefone}%0D%0A` +
+        `Serviço: ${agendamento.servico}%0D%0A` +
+        `Data: ${formatarData(agendamento.data)}%0D%0A` +
+        `Mensagem: ${agendamento.mensagem || 'Sem mensagem adicional'}%0D%0A`;
+
+    window.location.href = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${corpo}`;
 }
 
 // Função para recuperar agendamentos do localStorage
@@ -213,7 +255,7 @@ Olá! Gostaria de agendar um serviço:
     `.trim();
 
     // URL do WhatsApp (substitua o número pelo seu)
-    const numeroWhatsApp = '5511999999999'; // Altere para seu número
+    const numeroWhatsApp = '5531992675735'; // Número do agendamento solicitado
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`;
     
     window.open(urlWhatsApp, '_blank');
