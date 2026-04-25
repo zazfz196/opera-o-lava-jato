@@ -124,7 +124,7 @@ function salvarAgendamento(agendamento) {
 
 // Função para enviar o agendamento para o backend
 function enviarParaServidor(agendamento) {
-    const url = 'http://localhost:3000/agendamentos';
+    const url = '/agendamentos';
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -216,6 +216,11 @@ function getNextSunday() {
     return proximoDomingo.toISOString().split('T')[0];
 }
 
+function criarDataLocal(dataString) {
+    const [year, month, day] = dataString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+}
+
 function popularDomingosDisponiveis(selectElement) {
     // Limpar opções existentes exceto a primeira
     while (selectElement.options.length > 1) {
@@ -254,7 +259,8 @@ function popularDomingosDisponiveis(selectElement) {
 // Função para formatar data em português
 function formatarData(data) {
     const opções = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(data).toLocaleDateString('pt-BR', opções);
+    const date = criarDataLocal(data);
+    return date.toLocaleDateString('pt-BR', opções);
 }
 
 // Função para aplicar máscara de telefone

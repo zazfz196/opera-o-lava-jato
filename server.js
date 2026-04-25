@@ -9,6 +9,7 @@ const storageFile = path.join(__dirname, 'agendamentos.json');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname)));
 
 const contatoConfig = {
     tipo: 'email',
