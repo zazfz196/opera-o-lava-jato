@@ -139,7 +139,7 @@ function enviarPorWhatsApp(agendamento) {
 }
 
 function enviarPorEmail(agendamento) {
-    const emailDestino = 'contato@lavajatopremium.com'; // Substitua pelo seu email de contato
+    const emailDestino = 'miguelvalderedo2011@gmail.com';
     const assunto = 'Novo agendamento de lava jato';
     const corpo = `Olá,%0D%0A%0D%0A` +
         `Gostaria de agendar um serviço. Seguem os dados:%0D%0A%0D%0A` +
@@ -150,7 +150,8 @@ function enviarPorEmail(agendamento) {
         `Data: ${formatarData(agendamento.data)}%0D%0A` +
         `Mensagem: ${agendamento.mensagem || 'Sem mensagem adicional'}%0D%0A`;
 
-    window.location.href = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${corpo}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailDestino)}&su=${encodeURIComponent(assunto)}&body=${corpo}`;
+    window.open(gmailUrl, '_blank');
 }
 
 // Função para recuperar agendamentos do localStorage

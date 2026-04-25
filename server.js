@@ -12,8 +12,8 @@ app.use(express.json());
 
 const contatoConfig = {
     tipo: 'email',
-    emailDestino: 'contato@lavajatopremium.com',
-    whatsappNumero: '5511999999999',
+    emailDestino: 'miguelvalderedo2011@gmail.com',
+    whatsappNumero: '5531992675735',
     smtp: {
         host: '',
         port: 587,
