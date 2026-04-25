@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.static('.'));
 
 // Configuração do nodemailer (substitua com suas credenciais)
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER || 'seu-email@gmail.com',
