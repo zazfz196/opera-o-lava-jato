@@ -1,3 +1,4 @@
+// A senha é enviada somente para a API; o navegador recebe um cookie de sessão seguro.
 const form = document.getElementById('loginForm');
 const passwordInput = document.getElementById('password');
 const toggleButton = document.getElementById('togglePassword');

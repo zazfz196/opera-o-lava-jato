@@ -1,3 +1,4 @@
+// Estado local do painel. A fonte definitiva dos dados continua sendo a API protegida.
 const state = {
     bookings: [],
     filtered: []
@@ -150,6 +151,7 @@ async function updateStatus(id, status) {
 }
 
 async function deleteBooking(booking) {
+    // A confirmação evita que um clique acidental remova definitivamente um registro.
     const description = `${booking.nome}, ${formatDate(booking.data)} às ${booking.horario}`;
     if (!window.confirm(`Excluir permanentemente o agendamento de ${description}?\n\nEsta ação não pode ser desfeita.`)) {
         return;

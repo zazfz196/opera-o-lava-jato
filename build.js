@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+// Gera uma pasta de publicação contendo apenas os arquivos públicos necessários.
+// Assim, código do servidor, configurações e dependências não viram assets acessíveis.
 const root = __dirname;
 const dist = path.join(root, 'dist');
 const client = path.join(dist, 'client');

@@ -1,3 +1,4 @@
+-- Estrutura persistente dos agendamentos publicados no Cloudflare D1.
 CREATE TABLE IF NOT EXISTS bookings (
   id TEXT PRIMARY KEY,
   nome TEXT NOT NULL,
@@ -18,10 +19,12 @@ CREATE TABLE IF NOT EXISTS bookings (
   atualizado_em TEXT
 );
 
+-- Impede dois agendamentos ativos no mesmo horário; cancelados liberam novamente a vaga.
 CREATE UNIQUE INDEX IF NOT EXISTS bookings_active_slot_idx
 ON bookings (data, horario)
 WHERE status != 'cancelled';
 
+-- Contadores usados para limitar tentativas de login e envios abusivos.
 CREATE TABLE IF NOT EXISTS rate_limits (
   bucket TEXT PRIMARY KEY,
   window_start INTEGER NOT NULL,

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Servidor usado no desenvolvimento local. Em produção, o equivalente roda em worker.js.
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'agendamentos.json');
@@ -380,6 +381,7 @@ app.patch('/api/admin/agendamentos/:id', requireSameOrigin, requireAdmin, (req, 
 });
 
 app.delete('/api/admin/agendamentos/:id', requireSameOrigin, requireAdmin, (req, res) => {
+  // A exclusão é restrita à sessão administrativa e persiste no arquivo de dados local.
   const id = String(req.params.id || '');
   const bookings = readBookings();
   const bookingIndex = bookings.findIndex(item => String(item.id) === id);

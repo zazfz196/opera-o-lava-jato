@@ -1,16 +1,19 @@
 {
+  // Configuração do Worker de produção e de seus recursos vinculados.
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "operacao-lava-jato",
   "main": "./worker.js",
   "compatibility_date": "2026-07-30",
   "no_bundle": true,
   "assets": {
+    // Somente o conteúdo preparado pelo build.js é publicado como arquivo estático.
     "directory": "./dist/client",
     "binding": "ASSETS",
     "run_worker_first": true
   },
   "d1_databases": [
     {
+      // O código acessa este banco pela variável de ambiente env.DB.
       "binding": "DB",
       "database_name": "lava-jato-sol",
       "database_id": "6f663074-4fc6-4e2f-81b6-5e35edb9f542",

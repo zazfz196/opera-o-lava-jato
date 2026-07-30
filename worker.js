@@ -1,3 +1,4 @@
+// Backend de produção no Cloudflare: serve os assets e protege as operações no banco D1.
 const BASE_SERVICES = {
   'lavagem-simples': { name: 'Lavagem simples', price: 40, duration: '20–25 min' },
   pretinho: { name: 'Pretinho nas rodas', price: 15, duration: '5–10 min' },
@@ -118,6 +119,7 @@ async function signSession(payload, secret) {
 }
 
 async function verifySession(request, env) {
+  // A assinatura HMAC impede que o cookie administrativo seja forjado ou alterado.
   if (!env.SESSION_SECRET) return false;
   try {
     const token = parseCookies(request).admin_session || '';
@@ -144,6 +146,7 @@ async function requestJson(request) {
 }
 
 async function ensureSchema(db) {
+  // A criação idempotente permite inicializar um banco D1 novo na primeira requisição.
   await db.batch([
     db.prepare(`CREATE TABLE IF NOT EXISTS bookings (
       id TEXT PRIMARY KEY,
@@ -390,6 +393,7 @@ async function handleApi(request, env, url) {
 
   const statusMatch = url.pathname.match(/^\/api\/admin\/agendamentos\/([^/]+)$/);
   if (statusMatch && request.method === 'DELETE') {
+    // Excluir exige a mesma proteção de origem e autenticação usada nas demais ações.
     if (!sameOrigin(request)) return json({ error: 'Origem não autorizada.' }, 403);
     if (!await verifySession(request, env)) return json({ error: 'Não autorizado.' }, 401);
     const result = await env.DB.prepare(
