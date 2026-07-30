@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Agendamentos | Lava Jato Sol</title>
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <a href="/" class="dashboard-brand">
+            <img src="imagens/logo-clean.png" alt="" width="62" height="62">
+            <span><strong>Lava Jato Sol</strong><small>Painel de agendamentos</small></span>
+        </a>
+        <div class="header-actions">
+            <button type="button" class="button button-light" id="refreshButton"><i class="fas fa-rotate"></i> Atualizar</button>
+            <button type="button" class="button button-light" id="exportButton"><i class="fas fa-download"></i> Exportar CSV</button>
+            <a href="/" class="button button-outline">Ver site</a>
+            <button type="button" class="button button-outline" id="logoutButton"><i class="fas fa-right-from-bracket"></i> Sair</button>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="dashboard-intro">
+            <div>
+                <span class="eyebrow">Domingos · 12h às 13h</span>
+                <h1>Agendamentos</h1>
+                <p>Acompanhe as solicitações e confirme a agenda conforme a equipe disponível.</p>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="Resumo dos agendamentos">
+            <article><span>Total</span><strong id="totalStat">0</strong></article>
+            <article><span>Aguardando</span><strong id="pendingStat">0</strong></article>
+            <article><span>Confirmados</span><strong id="confirmedStat">0</strong></article>
+            <article><span>Arrecadação prevista</span><strong id="revenueStat">R$ 0</strong></article>
+        </section>
+
+        <section class="toolbar">
+            <label>
+                <span>Domingo</span>
+                <input type="date" id="dateFilter">
+            </label>
+            <label>
+                <span>Status</span>
+                <select id="statusFilter">
+                    <option value="">Todos</option>
+                    <option value="pending">Aguardando confirmação</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="completed">Concluído</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </label>
+            <label class="search-field">
+                <span>Buscar</span>
+                <input type="search" id="searchFilter" placeholder="Nome, telefone ou veículo">
+            </label>
+        </section>
+
+        <div id="dashboardMessage" class="dashboard-message" hidden></div>
+
+        <section class="bookings-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Agenda do dia</h2>
+                    <p id="resultCount">Nenhuma solicitação</p>
+                </div>
+                <div class="capacity">
+                    <span>Capacidade de referência</span>
+                    <strong id="capacityLabel">0 de 4 carros</strong>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Cliente</th>
+                            <th>Veículo</th>
+                            <th>Serviço</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsBody"></tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    <i class="far fa-calendar-check"></i>
+                    <h3>Nenhuma solicitação encontrada</h3>
+                    <p>Os novos agendamentos aparecerão aqui.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

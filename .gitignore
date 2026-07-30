@@ -1,0 +1,12 @@
+node_modules/
+.pnpm-store/
+.env
+npm-debug.log*
+pnpm-debug.log*
+agendamentos.json
+agendamentos.json.tmp
+
+# Originais preservados localmente; versões públicas usam enquadramento seguro
+imagens/celta-frente.jpeg
+imagens/idea-frente-meio.jpeg
+imagens/idea-traseira.jpeg

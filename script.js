@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initWhatsAppIntegration();
     initSmoothScrolling();
     initAnimations();
+    initServiceSelection();
+    initScrollProgress();
+    initNewBooking();
+    initServiceCalculator();
 });
 
 // Navbar responsiva
@@ -17,8 +21,10 @@ function initNavbar() {
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
+            const isOpen = navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active', isOpen);
+            navToggle.setAttribute('aria-expanded', String(isOpen));
+            navToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
         });
 
         // Fechar menu ao clicar em um link
@@ -26,6 +32,8 @@ function initNavbar() {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Abrir menu');
             });
         });
     }
@@ -93,37 +101,29 @@ function initDateRestrictions() {
 // Verificar disponibilidade da data
 async function checkAvailability(date) {
     try {
-        const response = await fetch('/api/agendamentos');
-        const agendamentos = await response.json();
+        const response = await fetch(`/api/disponibilidade?data=${encodeURIComponent(date)}`);
+        const disponibilidade = await response.json();
 
-        const agendamentosNoDia = agendamentos.filter(agendamento => {
-            const agendamentoDate = new Date(agendamento.data);
-            const selectedDate = new Date(date + 'T00:00:00');
-            return agendamentoDate.toDateString() === selectedDate.toDateString();
-        });
-
-        if (agendamentosNoDia.length >= 3) {
-            showMessage('Esta data já está lotada. Máximo 3 agendamentos por domingo.', 'error');
+        if (disponibilidade.total >= disponibilidade.capacidade) {
+            showMessage('As solicitações deste domingo estão completas.', 'error');
             document.getElementById('data').value = '';
             return;
         }
 
-        // Atualizar horários disponíveis
-        updateAvailableTimes(agendamentosNoDia);
+        updateAvailableTimes(disponibilidade.horariosOcupados || []);
     } catch (error) {
         console.error('Erro ao verificar disponibilidade:', error);
     }
 }
 
 // Atualizar horários disponíveis
-function updateAvailableTimes(agendamentosExistentes) {
+function updateAvailableTimes(horariosOcupados) {
     const horarioSelect = document.getElementById('horario');
-    const horariosOcupados = agendamentosExistentes.map(a => a.horario);
 
     // Resetar opções
     horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
 
-    const horariosDisponiveis = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
+    const horariosDisponiveis = ['12:00', '12:15', '12:30', '12:45'];
 
     horariosDisponiveis.forEach(horario => {
         if (!horariosOcupados.includes(horario)) {
@@ -135,13 +135,14 @@ function updateAvailableTimes(agendamentosExistentes) {
     });
 }
 
-// Integração com WhatsApp
+// Atalho para o WhatsApp
 function initWhatsAppIntegration() {
-    // Adicionar botão flutuante do WhatsApp
     const whatsappButton = document.createElement('a');
-    whatsappButton.href = 'https://wa.me/5511999999999?text=Olá! Gostaria de agendar uma lavagem.';
+    whatsappButton.href = 'https://wa.me/5531992675735?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Lava%20Jato%20Sol.';
     whatsappButton.className = 'whatsapp-float';
     whatsappButton.target = '_blank';
+    whatsappButton.rel = 'noopener';
+    whatsappButton.setAttribute('aria-label', 'Abrir WhatsApp do Lava Jato Sol');
     whatsappButton.innerHTML = '<i class="fab fa-whatsapp"></i>';
     document.body.appendChild(whatsappButton);
 }
@@ -178,7 +179,7 @@ function initAnimations() {
     }, observerOptions);
 
     // Observar elementos para animar
-    document.querySelectorAll('.service-card, .pricing-card, .gallery-item, .testimonial-card').forEach(el => {
+    document.querySelectorAll('.service-card, .pricing-card, .gallery-item, .testimonial-card, .work-card, .team-story, .video-story').forEach(el => {
         observer.observe(el);
     });
 }
@@ -187,7 +188,7 @@ function initAnimations() {
 function validateForm() {
     const nome = document.getElementById('nome').value.trim();
     const telefone = document.getElementById('telefone').value.trim();
-    const servico = document.getElementById('servico').value;
+    const servicos = getSelectedServices();
     const data = document.getElementById('data').value;
     const horario = document.getElementById('horario').value;
 
@@ -206,8 +207,8 @@ function validateForm() {
         isValid = false;
     }
 
-    if (!servico) {
-        showMessage('Por favor, selecione um serviço.', 'error');
+    if (!servicos.length) {
+        showMessage('Por favor, selecione pelo menos um serviço.', 'error');
         isValid = false;
     }
 
@@ -236,9 +237,11 @@ async function submitForm() {
     const formData = {
         nome: document.getElementById('nome').value.trim(),
         telefone: document.getElementById('telefone').value.trim(),
-        servico: document.getElementById('servico').value,
+        veiculo: document.getElementById('veiculo').value.trim(),
+        servicos: getSelectedServices(),
         data: document.getElementById('data').value,
-        horario: document.getElementById('horario').value
+        horario: document.getElementById('horario').value,
+        observacoes: document.getElementById('observacoes').value.trim()
     };
 
     try {
@@ -253,16 +256,11 @@ async function submitForm() {
         const result = await response.json();
 
         if (response.ok) {
-            showMessage('Agendamento realizado com sucesso!', 'success');
-
-            // Enviar WhatsApp
-            sendWhatsAppMessage(formData);
-
-            // Limpar formulário
+            form.hidden = true;
+            const successPanel = document.getElementById('mensagemSucesso');
+            successPanel.hidden = false;
+            successPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
             form.reset();
-
-            // Salvar no localStorage como backup
-            saveToLocalStorage(formData);
 
         } else {
             showMessage(result.error || 'Erro ao realizar agendamento.', 'error');
@@ -270,24 +268,26 @@ async function submitForm() {
 
     } catch (error) {
         console.error('Erro:', error);
-        showMessage('Erro ao conectar com o servidor. Tente novamente.', 'error');
-
-        // Fallback: salvar localmente
-        saveToLocalStorage(formData);
-        showMessage('Agendamento salvo localmente. Entre em contato por WhatsApp.', 'success');
+        const staticPreview = ['5500', '5501'].includes(window.location.port) || window.location.protocol === 'file:';
+        showMessage(
+            staticPreview
+                ? 'O formulário precisa do servidor de agendamentos. No VS Code, use “npm start” e abra http://localhost:3000.'
+                : 'Não foi possível falar com o servidor de agendamentos. Confirme se “npm start” continua em execução.',
+            'error'
+        );
     } finally {
         // Reabilitar botão
         submitButton.disabled = false;
-        submitButton.textContent = 'Agendar Agora';
+        submitButton.textContent = 'Solicitar agendamento';
     }
 }
 
 // Enviar mensagem WhatsApp
 function sendWhatsAppMessage(data) {
-    const servicoNome = document.getElementById('servico').options[document.getElementById('servico').selectedIndex].text;
-    const mensagem = `*Novo Agendamento - Lava Jato Premium*%0A%0A*Nome:* ${data.nome}%0A*Telefone:* ${data.telefone}%0A*Serviço:* ${servicoNome}%0A*Data:* ${formatDate(data.data)}%0A*Horário:* ${data.horario}%0A%0A*Confirme este agendamento!*`;
+    const servicoNome = calculateServiceSelection(data.servicos).label;
+    const mensagem = `*Novo Agendamento - Lava Jato Sol*%0A%0A*Nome:* ${data.nome}%0A*Telefone:* ${data.telefone}%0A*Serviço:* ${servicoNome}%0A*Data:* ${formatDate(data.data)}%0A*Horário:* ${data.horario}%0A%0A*Confirme este agendamento!*`;
 
-    const whatsappUrl = `https://wa.me/5511999999999?text=${mensagem}`;
+    const whatsappUrl = `https://wa.me/5531992675735?text=${mensagem}`;
 
     // Abrir WhatsApp em nova aba
     window.open(whatsappUrl, '_blank');
@@ -348,4 +348,145 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+function initServiceSelection() {
+    const presetServices = {
+        'lavagem-simples': ['lavagem-simples'],
+        pretinho: ['pretinho'],
+        aspiracao: ['aspiracao'],
+        'limpeza-interna': ['limpeza-interna'],
+        'lavagem-pretinho': ['lavagem-simples', 'pretinho'],
+        'lavagem-aspiracao': ['lavagem-simples', 'aspiracao'],
+        'lavagem-limpeza': ['lavagem-simples', 'limpeza-interna'],
+        'pacote-completo': ['lavagem-simples', 'pretinho', 'aspiracao', 'limpeza-interna']
+    };
+
+    document.querySelectorAll('.btn-service').forEach(button => {
+        button.addEventListener('click', () => {
+            setSelectedServices(presetServices[button.dataset.service] || []);
+            document.getElementById('contato').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    const selectedService = new URLSearchParams(window.location.search).get('servico');
+    if (presetServices[selectedService]) {
+        setSelectedServices(presetServices[selectedService]);
+    }
+}
+
+const serviceCatalog = {
+    'lavagem-simples': { name: 'Lavagem simples', price: 40, duration: '20–25 min' },
+    pretinho: { name: 'Pretinho nas rodas', price: 15, duration: '5–10 min' },
+    aspiracao: { name: 'Aspiração interna', price: 15, duration: '10–15 min' },
+    'limpeza-interna': { name: 'Limpeza interna', price: 20, duration: '10–15 min' }
+};
+
+const serviceOrder = Object.keys(serviceCatalog);
+const comboCatalog = {
+    'lavagem-simples|pretinho': { price: 50, duration: '25–30 min' },
+    'lavagem-simples|aspiracao': { price: 50, duration: '25–35 min' },
+    'lavagem-simples|limpeza-interna': { price: 50, duration: '25–30 min' },
+    'pretinho|aspiracao': { price: 25, duration: '10–20 min' },
+    'pretinho|limpeza-interna': { price: 30, duration: '10–20 min' },
+    'aspiracao|limpeza-interna': { price: 30, duration: '15–25 min' },
+    'lavagem-simples|pretinho|aspiracao': { price: 60, duration: '25–35 min' },
+    'lavagem-simples|pretinho|limpeza-interna': { price: 60, duration: '25–35 min' },
+    'lavagem-simples|aspiracao|limpeza-interna': { price: 60, duration: '25–40 min' },
+    'pretinho|aspiracao|limpeza-interna': { price: 40, duration: '20–30 min' },
+    'lavagem-simples|pretinho|aspiracao|limpeza-interna': { price: 70, duration: '25–40 min' }
+};
+
+function getSelectedServices() {
+    return Array.from(document.querySelectorAll('input[name="servicos"]:checked'))
+        .map(input => input.value)
+        .sort((a, b) => serviceOrder.indexOf(a) - serviceOrder.indexOf(b));
+}
+
+function setSelectedServices(services) {
+    document.querySelectorAll('input[name="servicos"]').forEach(input => {
+        input.checked = services.includes(input.value);
+    });
+    updateServiceSummary();
+}
+
+function calculateServiceSelection(services) {
+    const selected = [...new Set(services)]
+        .filter(service => serviceCatalog[service])
+        .sort((a, b) => serviceOrder.indexOf(a) - serviceOrder.indexOf(b));
+    const originalPrice = selected.reduce((sum, id) => sum + serviceCatalog[id].price, 0);
+    const combo = comboCatalog[selected.join('|')];
+    const price = combo?.price ?? originalPrice;
+    const names = selected.map(id => serviceCatalog[id].name);
+    return {
+        label: selected.length === serviceOrder.length ? 'Pacote completo' : names.join(' + '),
+        originalPrice,
+        price,
+        savings: originalPrice - price,
+        duration: combo?.duration ?? (selected[0] ? serviceCatalog[selected[0]].duration : '')
+    };
+}
+
+function initServiceCalculator() {
+    document.querySelectorAll('input[name="servicos"]').forEach(input => {
+        input.addEventListener('change', updateServiceSummary);
+    });
+    updateServiceSummary();
+}
+
+function updateServiceSummary() {
+    const selection = calculateServiceSelection(getSelectedServices());
+    const original = document.getElementById('selectionOriginal');
+    const savings = document.getElementById('selectionSavings');
+    document.getElementById('selectionLabel').textContent = selection.label || 'Selecione os cuidados desejados';
+    document.getElementById('selectionDuration').textContent =
+        selection.duration ? `Tempo estimado: ${selection.duration}` : 'O valor do combo aparece aqui';
+    document.getElementById('selectionPrice').textContent = currency(selection.price);
+    original.textContent = currency(selection.originalPrice);
+    original.hidden = selection.savings <= 0;
+    savings.textContent = `Você economiza ${currency(selection.savings)}`;
+    savings.hidden = selection.savings <= 0;
+}
+
+function currency(value) {
+    return Number(value || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 0
+    });
+}
+
+function initScrollProgress() {
+    const progressBar = document.getElementById('progressBar');
+    if (!progressBar) return;
+
+    const updateProgress = () => {
+        const available = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = available > 0 ? (window.scrollY / available) * 100 : 0;
+        progressBar.style.width = `${Math.min(progress, 100)}%`;
+    };
+
+    window.addEventListener('scroll', debounce(updateProgress, 16), { passive: true });
+    updateProgress();
+}
+
+function initNewBooking() {
+    const button = document.getElementById('novoAgendamento');
+    const form = document.getElementById('agendamentoForm');
+    const successPanel = document.getElementById('mensagemSucesso');
+
+    if (!button || !form || !successPanel) return;
+    button.addEventListener('click', () => {
+        successPanel.hidden = true;
+        form.hidden = false;
+        document.getElementById('nome').focus();
+    });
+}
+
+const currentYear = document.getElementById('currentYear');
+if (currentYear) {
+    currentYear.textContent = new Date().getFullYear();
 }

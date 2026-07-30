@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Acesso administrativo | Lava Jato Sol</title>
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <main class="login-shell">
+        <a class="login-brand" href="/" aria-label="Voltar ao site do Lava Jato Sol">
+            <img src="imagens/logo-clean.png" alt="" width="74" height="74">
+            <span>Lava Jato Sol</span>
+        </a>
+
+        <section class="login-card" aria-labelledby="loginTitle">
+            <div class="login-icon"><i class="fas fa-lock" aria-hidden="true"></i></div>
+            <span class="eyebrow">Área restrita</span>
+            <h1 id="loginTitle">Acessar agendamentos</h1>
+            <p>Informe a senha administrativa para abrir o painel.</p>
+
+            <form id="loginForm">
+                <label for="password">Senha</label>
+                <div class="password-field">
+                    <input type="password" id="password" name="password" autocomplete="current-password" required autofocus>
+                    <button type="button" id="togglePassword" aria-label="Mostrar senha">
+                        <i class="far fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="login-message" id="loginMessage" role="alert" hidden></div>
+                <button class="login-button" type="submit">
+                    <span>Entrar no painel</span>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </form>
+            <a class="back-link" href="/"><i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
+        </section>
+    </main>
+    <script src="login.js"></script>
+</body>
+</html>

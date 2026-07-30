@@ -3,32 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lava Jato  - Serviços de Qualidade</title>
+    <title>Lava Jato Sol | Lavagem automotiva em Contagem</title>
+    <meta name="description" content="Lavagem automotiva aos domingos no bairro Bandeirantes, em Contagem. Agende e apoie nossa arrecadação para o Campori DSA 2026.">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-car"></i>
-                <span>Lava Jato Premium</span>
-            </div>
-            <div class="nav-menu">
+            <a class="nav-logo" href="#inicio" aria-label="Lava Jato Sol — início">
+                <img src="imagens/logo-clean.png" alt="" width="58" height="58">
+                <span>Lava Jato Sol</span>
+            </a>
+            <div class="nav-menu" id="menu-principal">
                 <a href="#inicio" class="nav-link">Início</a>
                 <a href="#servicos" class="nav-link">Serviços</a>
                 <a href="#precos" class="nav-link">Preços</a>
-                <a href="#galeria" class="nav-link">Galeria</a>
-                <a href="#depoimentos" class="nav-link">Depoimentos</a>
+                <a href="#galeria" class="nav-link">Como funciona</a>
+                <a href="#trabalho" class="nav-link">Nosso trabalho</a>
                 <a href="#contato" class="nav-link">Contato</a>
             </div>
-            <div class="nav-toggle">
+            <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-controls="menu-principal" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
@@ -36,15 +38,25 @@
     <section id="inicio" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>Seu Carro Merece o Melhor</h1>
-                <p>Serviços profissionais de lava-jato com produtos de alta qualidade e atendimento personalizado.</p>
+                <span class="eyebrow">Arrecadação para o Campori DSA 2026</span>
+                <h1>Seu carro limpo.<br>Seu tempo respeitado.</h1>
+                <p>Seu carro bem cuidado e uma boa causa apoiada. Atendemos aos domingos, no bairro Bandeirantes, em Contagem.</p>
                 <div class="hero-buttons">
                     <a href="#contato" class="btn btn-primary">Agendar Agora</a>
                     <a href="#servicos" class="btn btn-secondary">Ver Serviços</a>
                 </div>
+                <div class="hero-trust">
+                    <span><i class="fas fa-calendar-check" aria-hidden="true"></i> Domingos, de 12h às 13h</span>
+                    <span><i class="fas fa-tag" aria-hidden="true"></i> Preço definido</span>
+                    <span><i class="fas fa-shield-alt" aria-hidden="true"></i> Cuidado profissional</span>
+                </div>
             </div>
             <div class="hero-image">
-                <img src="imagens/hero.png" alt="Carro limpo">
+                <img src="imagens/hero.png" alt="Automóvel esportivo limpo após atendimento" width="900" height="600">
+                <div class="hero-float-card">
+                    <strong>Seu carro pronto</strong>
+                    <span>sem perder o dia na fila</span>
+                </div>
             </div>
         </div>
     </section>
@@ -53,51 +65,38 @@
     <section id="servicos" class="services">
         <div class="container">
             <div class="section-header">
-                <h2>Nossos Serviços</h2>
-                <p>Oferecemos uma ampla gama de serviços para manter seu veículo sempre impecável</p>
+                <span class="section-kicker">O que fazemos</span>
+                <h2>Cuidado para cada momento do seu carro</h2>
+                <p>Quatro cuidados que podem ser contratados separadamente ou combinados.</p>
             </div>
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
-                        <i class="fas fa-car-wash"></i>
+                        <i class="fas fa-car-side"></i>
                     </div>
-                    <h3>Lavação Completa</h3>
-                    <p>Limpeza externa e interna completa do veículo com produtos especializados.</p>
+                    <h3>Lavagem simples</h3>
+                    <p>Lavagem externa com shampoo automotivo e secagem cuidadosa.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-circle"></i>
                     </div>
-                    <h3>Cera Automotiva</h3>
-                    <p>Aplicação de cera de alta qualidade para proteção e brilho duradouro.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-spray-can"></i>
-                    </div>
-                    <h3>Hidratação de Couro</h3>
-                    <p>Tratamento especial para bancos e acabamentos em couro.</p>
+                    <h3>Pretinho nas rodas</h3>
+                    <p>Finalização dos pneus para recuperar a aparência escura e bem cuidada.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-wind"></i>
                     </div>
-                    <h3>Aspirador e Limpeza</h3>
-                    <p>Limpeza profunda do interior com aspiração completa.</p>
+                    <h3>Aspiração interna</h3>
+                    <p>Remoção de poeira e resíduos dos bancos, carpetes e áreas internas.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
-                        <i class="fas fa-tint"></i>
+                        <i class="fas fa-spray-can"></i>
                     </div>
-                    <h3>Limpeza Técnica</h3>
-                    <p>Limpeza de motor e componentes técnicos com produtos específicos.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-sun"></i>
-                    </div>
-                    <h3>Cristalização</h3>
-                    <p>Polimento e cristalização para brilho máximo da pintura.</p>
+                    <h3>Limpeza interna</h3>
+                    <p>Limpeza das superfícies internas para um ambiente mais agradável.</p>
                 </div>
             </div>
         </div>
@@ -107,128 +106,229 @@
     <section id="precos" class="pricing">
         <div class="container">
             <div class="section-header">
-                <h2>Tabela de Preços</h2>
-                <p>Preços competitivos e transparentes para todos os nossos serviços</p>
+                <span class="section-kicker">Escolha sem surpresa</span>
+                <h2>Monte o cuidado do seu jeito</h2>
+                <p>Valores transparentes e duração estimada considerando nossa equipe trabalhando em conjunto.</p>
             </div>
-            <div class="pricing-table">
-                <div class="pricing-card">
+            <div class="pricing-table pricing-catalog">
+                <div class="pricing-card compact">
                     <div class="pricing-header">
-                        <h3>Lavação Básica</h3>
-                        <div class="price">R$ 25</div>
+                        <h3>Lavagem simples</h3>
+                        <div class="price">R$ 40</div>
                     </div>
-                    <ul class="pricing-features">
-                        <li>Limpeza externa</li>
-                        <li>Aspirador interno</li>
-                        <li>Limpeza de vidros</li>
-                    </ul>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 20–25 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="lavagem-simples">Escolher</button>
                 </div>
-                <div class="pricing-card featured">
+                <div class="pricing-card compact">
                     <div class="pricing-header">
-                        <h3>Lavação Completa</h3>
-                        <div class="price">R$ 45</div>
-                        <span class="badge">Mais Popular</span>
+                        <h3>Pretinho nas rodas</h3>
+                        <div class="price">R$ 15</div>
                     </div>
-                    <ul class="pricing-features">
-                        <li>Tudo da básica</li>
-                        <li>Limpeza interna completa</li>
-                        <li>Cera automotiva</li>
-                        <li>Hidratação de couro</li>
-                    </ul>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 5–10 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="pretinho">Escolher</button>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card compact">
                     <div class="pricing-header">
-                        <h3>Lavação Premium</h3>
-                        <div class="price">R$ 80</div>
+                        <h3>Aspiração interna</h3>
+                        <div class="price">R$ 15</div>
                     </div>
-                    <ul class="pricing-features">
-                        <li>Tudo da completa</li>
-                        <li>Cristalização</li>
-                        <li>Limpeza técnica</li>
-                        <li>Proteção cerâmica</li>
-                    </ul>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 10–15 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="aspiracao">Escolher</button>
+                </div>
+                <div class="pricing-card compact">
+                    <div class="pricing-header">
+                        <h3>Limpeza interna</h3>
+                        <div class="price">R$ 20</div>
+                    </div>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 10–15 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="limpeza-interna">Escolher</button>
+                </div>
+                <div class="pricing-card compact">
+                    <div class="pricing-header">
+                        <h3>Lavagem + pretinho</h3>
+                        <div class="price">R$ 50</div>
+                    </div>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 25–30 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="lavagem-pretinho">Escolher</button>
+                </div>
+                <div class="pricing-card compact">
+                    <div class="pricing-header">
+                        <h3>Lavagem + aspiração</h3>
+                        <div class="price">R$ 50</div>
+                    </div>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 25–35 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="lavagem-aspiracao">Escolher</button>
+                </div>
+                <div class="pricing-card compact">
+                    <div class="pricing-header">
+                        <h3>Lavagem + limpeza interna</h3>
+                        <div class="price">R$ 50</div>
+                    </div>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 25–30 min</p>
+                    <button type="button" class="btn btn-secondary btn-service" data-service="lavagem-limpeza">Escolher</button>
+                </div>
+                <div class="pricing-card compact featured">
+                    <div class="pricing-header">
+                        <h3>Pacote completo</h3>
+                        <div class="price">R$ 70</div>
+                        <span class="badge">Melhor escolha</span>
+                    </div>
+                    <p class="duration"><i class="far fa-clock"></i> cerca de 25–40 min</p>
+                    <button type="button" class="btn btn-primary btn-service" data-service="pacote-completo">Escolher completo</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Galeria -->
+    <!-- Como funciona -->
     <section id="galeria" class="gallery">
         <div class="container">
             <div class="section-header">
-                <h2>Nossa Galeria</h2>
-                <p>Veja alguns dos nossos trabalhos realizados</p>
+                <span class="section-kicker">Simples do início ao fim</span>
+                <h2>Agendar leva menos de um minuto</h2>
+                <p>Você escolhe, envia a solicitação e recebe a confirmação pelo WhatsApp.</p>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="imagens/mecanico.png" alt="Carro limpo">
+            <div class="process-grid">
+                <div class="process-step">
+                    <span>01</span>
+                    <div>
+                        <h3>Escolha o cuidado</h3>
+                        <p>Compare as opções e selecione o serviço que combina com seu carro.</p>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="imagens/hero.png" alt="Interior limpo">
+                <div class="process-step">
+                    <span>02</span>
+                    <div>
+                        <h3>Reserve seu horário</h3>
+                        <p>Informe seus dados, o veículo e o melhor horário disponível.</p>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="" alt="Polimento">
-                    //adicionar imagem
-                </div>
-                <div class="gallery-item">
-                    <img src="imagens/carro-de-frente.jpg" alt="Cera aplicada">
-                </div>
-                <div class="gallery-item">
-                    <img src="imagens/mecanico.png" alt="Resultado final">
-                </div>
-                <div class="gallery-item">
-                    <img src="imagens/hero.png" alt="Detalhes">
+                <div class="process-step">
+                    <span>03</span>
+                    <div>
+                        <h3>Receba a confirmação</h3>
+                        <p>Nossa equipe confirma pelo WhatsApp e deixa tudo preparado para você.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Depoimentos -->
+    <!-- Nosso trabalho -->
+    <section id="trabalho" class="work-showcase">
+        <div class="container">
+            <div class="section-header work-heading">
+                <div>
+                    <span class="section-kicker">Feito por gente de verdade</span>
+                    <h2>Capricho que aparece no resultado</h2>
+                </div>
+                <p>Um pouco dos nossos domingos: trabalho em equipe, cuidado em cada etapa e carros entregues com atenção.</p>
+            </div>
+
+            <div class="work-grid">
+                <figure class="work-card work-card-process">
+                    <img src="imagens/lavagem-em-andamento-placa-protegida.png" alt="Equipe do Lava Jato Sol realizando a lavagem externa de um veículo" loading="lazy" width="1086" height="1448">
+                    <figcaption>
+                        <span>Durante</span>
+                        <strong>Lavagem feita com atenção aos detalhes</strong>
+                    </figcaption>
+                </figure>
+
+                <figure class="work-card work-card-interior">
+                    <img src="imagens/finalizado2.jpeg" alt="Interior de um veículo limpo após o atendimento" loading="lazy" width="1200" height="1600">
+                    <figcaption>
+                        <span>Depois</span>
+                        <strong>Interior limpo e organizado</strong>
+                    </figcaption>
+                </figure>
+
+                <figure class="work-card work-card-detail">
+                    <img src="imagens/finalizado.jpeg" alt="Detalhe dos bancos limpos e da entrega do Lava Jato Sol" loading="lazy" width="1200" height="1600">
+                    <figcaption>
+                        <span>Acabamento</span>
+                        <strong>Cuidado que você percebe</strong>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="story-grid">
+                <article class="team-story">
+                    <div class="team-photo">
+                        <img src="imagens/sol.jpeg" alt="Equipe do Lava Jato Sol reunida com uniformes laranja" loading="lazy" width="1086" height="1448">
+                    </div>
+                    <div class="team-copy">
+                        <span class="section-kicker">Mais que uma lavagem</span>
+                        <h3>Uma equipe unida por um propósito</h3>
+                        <p>O Lava Jato Sol nasceu para arrecadar recursos para o Campori da Divisão Sul-Americana de 2026. Cada agendamento ajuda nossa equipe a chegar mais perto desse encontro.</p>
+                        <a href="#contato" class="text-link">Agende e faça parte <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </article>
+
+                <article class="video-story">
+                    <div class="video-frame">
+                        <video controls preload="metadata" playsinline aria-label="Depoimento em vídeo sobre o trabalho do Lava Jato Sol">
+                            <source src="imagens/feedback-1.mp4" type="video/mp4">
+                            Seu navegador não consegue reproduzir este vídeo.
+                        </video>
+                    </div>
+                    <div class="video-copy">
+                        <span><i class="fas fa-circle-play" aria-hidden="true"></i> Depoimento real</span>
+                        <h3>Veja a experiência de quem já participou</h3>
+                        <p>Um relato completo sobre o atendimento e o resultado entregue pela equipe.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais -->
     <section id="depoimentos" class="testimonials">
         <div class="container">
             <div class="section-header">
-                <h2>O que Nossos Clientes Dizem</h2>
-                <p>A satisfação dos nossos clientes é nossa maior recompensa</p>
+                <span class="section-kicker">Nosso jeito de trabalhar</span>
+                <h2>Capricho que você percebe</h2>
+                <p>Uma experiência organizada antes, durante e depois da lavagem.</p>
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card">
                     <div class="testimonial-content">
-                        <p>"Excelente serviço! Meu carro ficou brilhando como novo. Recomendo fortemente!"</p>
+                        <p>Seu horário é reservado para reduzir espera e deixar o atendimento previsível.</p>
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="author-info">
-                            <h4>Maria Silva</h4>
-                            <span>Cliente há 2 anos</span>
+                            <h4>Tempo respeitado</h4>
+                            <span>Chegue no horário combinado</span>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-content">
-                        <p>"Profissionais competentes e produtos de qualidade. Sempre saio satisfeito."</p>
+                        <p>Você sabe o valor e o que está incluído antes de enviar a solicitação.</p>
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="author-info">
-                            <h4>João Santos</h4>
-                            <span>Cliente fiel</span>
+                            <h4>Preço transparente</h4>
+                            <span>Sem surpresa na retirada</span>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-content">
-                        <p>"Atendimento rápido e preço justo. Melhor lava-jato da região!"</p>
+                        <p>Cada serviço segue uma sequência clara para entregar um resultado consistente.</p>
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="author-info">
-                            <h4>Ana Costa</h4>
-                            <span>Cliente mensal</span>
+                            <h4>Padrão de cuidado</h4>
+                            <span>Atenção em cada etapa</span>
                         </div>
                     </div>
                 </div>
@@ -240,77 +340,143 @@
     <section id="contato" class="contact">
         <div class="container">
             <div class="section-header">
-                <h2>Agende Seu Horário</h2>
-                <p>Entre em contato conosco para agendar seu serviço</p>
+                <span class="section-kicker">Pronto para cuidar do carro?</span>
+                <h2>Reserve seu próximo horário</h2>
+                <p>Escolha o serviço e envie sua solicitação. A confirmação chega pelo WhatsApp.</p>
             </div>
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="info-item">
-                        <i class="fas fa-phone"></i>
+                        <i class="fab fa-whatsapp"></i>
                         <div>
-                            <h4>Telefone</h4>
-                            <p>(11) 99999-9999</p>
+                            <h4>WhatsApp / telefone</h4>
+                            <p><a href="https://wa.me/5531992675735?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Lava%20Jato%20Sol." target="_blank" rel="noopener">+55 (31) 99267-5735</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fab fa-instagram"></i>
+                        <div>
+                            <h4>Instagram</h4>
+                            <p><a href="https://www.instagram.com/sol.luzeirosamc/" target="_blank" rel="noopener">@sol.luzeirosamc</a></p>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email</h4>
-                            <p>contato@lavajato.com</p>
+                            <p><a href="mailto:miguelvalderedo2011@gmail.com">miguelvalderedo2011@gmail.com</a></p>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h4>Endereço</h4>
-                            <p>Rua das Flores, 123 - Centro</p>
+                            <p>Rua dos Jesuítas, 223<br>Bandeirantes, Contagem - MG</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <h4>Horário de Funcionamento</h4>
-                            <p>Segunda a Sábado: 8h às 18h</p>
-                            <p>Domingo: 9h às 16h</p>
+                            <h4>Atendimento</h4>
+                            <p>Domingos, normalmente das 12h às 13h</p>
+                            <p>Datas e horários podem variar.</p>
+                        </div>
+                    </div>
+                    <div class="info-item cause-item">
+                        <i class="fas fa-campground"></i>
+                        <div>
+                            <h4>Por uma boa causa</h4>
+                            <p>Estamos arrecadando para o Campori da Divisão Sul-Americana de 2026.</p>
                         </div>
                     </div>
                 </div>
                 <div class="contact-form">
+                    <div class="booking-steps" aria-label="Etapas do agendamento">
+                        <span class="active">1. Seus dados</span>
+                        <span>2. Serviço e horário</span>
+                        <span>3. Confirmação</span>
+                    </div>
+                    <div id="mensagemSucesso" class="booking-success" hidden>
+                        <i class="fas fa-circle-check" aria-hidden="true"></i>
+                        <h3>Solicitação recebida!</h3>
+                        <p>Vamos confirmar o horário pelo WhatsApp informado.</p>
+                        <button type="button" class="btn btn-secondary" id="novoAgendamento">Fazer outra solicitação</button>
+                    </div>
                     <form id="agendamentoForm">
-                        <div class="form-group">
-                            <label for="nome">Nome Completo *</label>
-                            <input type="text" id="nome" name="nome" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome completo *</label>
+                                <input type="text" id="nome" name="nome" autocomplete="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefone">WhatsApp / telefone *</label>
+                                <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(31) 99999-9999" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="veiculo">Veículo</label>
+                                <input type="text" id="veiculo" name="veiculo" placeholder="Ex.: Onix branco">
+                            </div>
+                        </div>
+                        <fieldset class="service-picker">
+                            <legend>Escolha um ou mais serviços *</legend>
+                            <div class="service-options">
+                                <label class="service-option">
+                                    <input type="checkbox" name="servicos" value="lavagem-simples">
+                                    <span><strong>Lavagem simples</strong><small>Shampoo automotivo e secagem</small></span>
+                                    <b>R$ 40</b>
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="servicos" value="pretinho">
+                                    <span><strong>Pretinho nas rodas</strong><small>Acabamento dos pneus</small></span>
+                                    <b>R$ 15</b>
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="servicos" value="aspiracao">
+                                    <span><strong>Aspiração interna</strong><small>Bancos, carpetes e áreas internas</small></span>
+                                    <b>R$ 15</b>
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="servicos" value="limpeza-interna">
+                                    <span><strong>Limpeza interna</strong><small>Superfícies internas</small></span>
+                                    <b>R$ 20</b>
+                                </label>
+                            </div>
+                            <div class="selection-summary" id="selectionSummary" aria-live="polite">
+                                <div>
+                                    <span id="selectionLabel">Selecione os cuidados desejados</span>
+                                    <small id="selectionDuration">O valor do combo aparece aqui</small>
+                                </div>
+                                <div class="selection-price">
+                                    <s id="selectionOriginal" hidden></s>
+                                    <strong id="selectionPrice">R$ 0</strong>
+                                    <span id="selectionSavings" hidden></span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data">Data *</label>
+                                <input type="date" id="data" name="data" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="horario">Horário *</label>
+                                <select id="horario" name="horario" required>
+                                    <option value="">Selecione um horário</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="12:15">12:15</option>
+                                    <option value="12:30">12:30</option>
+                                    <option value="12:45">12:45</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="telefone">Telefone *</label>
-                            <input type="tel" id="telefone" name="telefone" required>
+                            <label for="observacoes">Observações</label>
+                            <textarea id="observacoes" name="observacoes" rows="3" placeholder="Algum cuidado especial ou informação importante?"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="servico">Serviço Desejado *</label>
-                            <select id="servico" name="servico" required>
-                                <option value="">Selecione um serviço</option>
-                                <option value="lavacao-basica">Lavação Básica - R$ 25</option>
-                                <option value="lavacao-completa">Lavação Completa - R$ 45</option>
-                                <option value="lavacao-premium">Lavação Premium - R$ 80</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="data">Data *</label>
-                            <input type="date" id="data" name="data" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="horario">Horário *</label>
-                            <select id="horario" name="horario" required>
-                                <option value="">Selecione um horário</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Agendar Agora</button>
+                        <button type="submit" class="btn btn-primary">Solicitar agendamento</button>
+                        <p class="form-note">O horário é confirmado após o envio da solicitação.</p>
                     </form>
                 </div>
             </div>
@@ -322,23 +488,24 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <i class="fas fa-car"></i>
-                    <span>Lava Jato Premium</span>
+                    <img src="imagens/logo-clean.png" alt="" width="64" height="64">
+                    <span>Lava Jato Sol</span>
                 </div>
                 <div class="footer-links">
                     <a href="#inicio">Início</a>
                     <a href="#servicos">Serviços</a>
                     <a href="#precos">Preços</a>
                     <a href="#contato">Contato</a>
+                    <a href="/dashboard.html">Painel de agendamentos</a>
                 </div>
                 <div class="footer-social">
-                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://wa.me/5531992675735?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Lava%20Jato%20Sol." target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp do Lava Jato Sol"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/sol.luzeirosamc/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram do Lava Jato Sol"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:miguelvalderedo2011@gmail.com" class="social-link" aria-label="Enviar e-mail"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Lava Jato Premium. Todos os direitos reservados.</p>
+                <p>&copy; <span id="currentYear">2026</span> Lava Jato Sol · Arrecadação para o Campori DSA 2026.</p>
             </div>
         </div>
     </footer>
