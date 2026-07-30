@@ -6,6 +6,7 @@ pnpm-debug.log*
 agendamentos.json
 agendamentos.json.tmp
 dist/
+.wrangler/
 
 # Originais preservados localmente; versões públicas usam enquadramento seguro
 imagens/celta-frente.jpeg
