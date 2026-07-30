@@ -5,6 +5,7 @@ npm-debug.log*
 pnpm-debug.log*
 agendamentos.json
 agendamentos.json.tmp
+dist/
 
 # Originais preservados localmente; versões públicas usam enquadramento seguro
 imagens/celta-frente.jpeg
