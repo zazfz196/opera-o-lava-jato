@@ -423,16 +423,7 @@ export default {
         return await handleApi(request, env, url);
       }
 
-      if (url.pathname === '/dashboard' || url.pathname === '/dashboard.html') {
-        if (!await verifySession(request, env)) return redirect(request, '/login.html');
-        const assetRequest = new Request(new URL('/dashboard.html', request.url), request);
-        const response = await env.ASSETS.fetch(assetRequest);
-        const secured = withSecurity(response);
-        secured.headers.set('Cache-Control', 'no-store');
-        return secured;
-      }
-
-      if (url.pathname === '/login.html' && await verifySession(request, env)) {
+      if (url.pathname === '/dashboard') {
         return redirect(request, '/dashboard.html');
       }
 
