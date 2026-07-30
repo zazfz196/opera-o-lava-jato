@@ -63,10 +63,6 @@ function json(data, status = 200, headers = {}) {
   }));
 }
 
-function redirect(request, pathname) {
-  return withSecurity(Response.redirect(new URL(pathname, request.url), 303));
-}
-
 function parseCookies(request) {
   return String(request.headers.get('cookie') || '')
     .split(';')
@@ -421,10 +417,6 @@ export default {
     try {
       if (url.pathname.startsWith('/api/')) {
         return await handleApi(request, env, url);
-      }
-
-      if (url.pathname === '/dashboard') {
-        return redirect(request, '/dashboard.html');
       }
 
       if (['/agendamentos.json', '/server.js', '/package.json', '/pnpm-lock.yaml', '/.env'].includes(url.pathname)) {
