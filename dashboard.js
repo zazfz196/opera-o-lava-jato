@@ -106,17 +106,24 @@ function createRow(booking) {
         <td class="service-cell"><strong>${escapeHtml(booking.servicoNome || booking.servico)}</strong><span>${escapeHtml(booking.duracao || '')}</span></td>
         <td><strong>${currency(booking.preco)}</strong></td>
         <td><span class="status-badge status-${escapeHtml(booking.status)}">${statusLabels[booking.status] || booking.status}</span></td>
-        <td>
+        <td><div class="booking-actions">
             <select class="status-select" aria-label="Alterar status de ${escapeHtml(booking.nome)}">
                 ${Object.entries(statusLabels).map(([value, label]) =>
                     `<option value="${value}" ${value === booking.status ? 'selected' : ''}>${label}</option>`
                 ).join('')}
             </select>
-        </td>
+            <button class="delete-button" type="button" aria-label="Excluir agendamento de ${escapeHtml(booking.nome)}">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                Excluir
+            </button>
+        </div></td>
     `;
 
     row.querySelector('.status-select').addEventListener('change', event => {
         updateStatus(booking.id, event.target.value);
+    });
+    row.querySelector('.delete-button').addEventListener('click', () => {
+        deleteBooking(booking);
     });
     return row;
 }
@@ -139,6 +146,29 @@ async function updateStatus(id, status) {
     } catch (error) {
         setMessage(error.message);
         await loadBookings();
+    }
+}
+
+async function deleteBooking(booking) {
+    const description = `${booking.nome}, ${formatDate(booking.data)} às ${booking.horario}`;
+    if (!window.confirm(`Excluir permanentemente o agendamento de ${description}?\n\nEsta ação não pode ser desfeita.`)) {
+        return;
+    }
+
+    setMessage('');
+    try {
+        const response = await fetch(`/api/admin/agendamentos/${encodeURIComponent(booking.id)}`, {
+            method: 'DELETE'
+        });
+        if (response.status === 401) {
+            window.location.replace('/login.html');
+            return;
+        }
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Não foi possível excluir o agendamento.');
+        await loadBookings();
+    } catch (error) {
+        setMessage(error.message);
     }
 }
 

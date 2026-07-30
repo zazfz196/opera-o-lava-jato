@@ -389,6 +389,16 @@ async function handleApi(request, env, url) {
   }
 
   const statusMatch = url.pathname.match(/^\/api\/admin\/agendamentos\/([^/]+)$/);
+  if (statusMatch && request.method === 'DELETE') {
+    if (!sameOrigin(request)) return json({ error: 'Origem não autorizada.' }, 403);
+    if (!await verifySession(request, env)) return json({ error: 'Não autorizado.' }, 401);
+    const result = await env.DB.prepare(
+      'DELETE FROM bookings WHERE id = ?'
+    ).bind(decodeURIComponent(statusMatch[1])).run();
+    if (!result.meta.changes) return json({ error: 'Agendamento não encontrado.' }, 404);
+    return json({ success: true });
+  }
+
   if (statusMatch && request.method === 'PATCH') {
     if (!sameOrigin(request)) return json({ error: 'Origem não autorizada.' }, 403);
     if (!await verifySession(request, env)) return json({ error: 'Não autorizado.' }, 401);

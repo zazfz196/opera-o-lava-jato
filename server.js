@@ -379,6 +379,20 @@ app.patch('/api/admin/agendamentos/:id', requireSameOrigin, requireAdmin, (req, 
   res.json({ success: true, booking });
 });
 
+app.delete('/api/admin/agendamentos/:id', requireSameOrigin, requireAdmin, (req, res) => {
+  const id = String(req.params.id || '');
+  const bookings = readBookings();
+  const bookingIndex = bookings.findIndex(item => String(item.id) === id);
+
+  if (bookingIndex === -1) {
+    return res.status(404).json({ error: 'Agendamento não encontrado.' });
+  }
+
+  bookings.splice(bookingIndex, 1);
+  writeBookings(bookings);
+  res.json({ success: true });
+});
+
 app.listen(PORT, () => {
   console.log(`Lava Jato Sol disponível na porta ${PORT}`);
 });
