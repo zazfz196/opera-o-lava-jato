@@ -138,7 +138,7 @@ function updateAvailableTimes(horariosOcupados) {
 // Atalho para o WhatsApp
 function initWhatsAppIntegration() {
     const whatsappButton = document.createElement('a');
-    whatsappButton.href = 'https://wa.me/5531992675735?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Lava%20Jato%20Sol.';
+    whatsappButton.href = 'https://wa.me/5531984601602?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Lava%20Jato%20Sol.';
     whatsappButton.className = 'whatsapp-float';
     whatsappButton.target = '_blank';
     whatsappButton.rel = 'noopener';
@@ -287,7 +287,7 @@ function sendWhatsAppMessage(data) {
     const servicoNome = calculateServiceSelection(data.servicos).label;
     const mensagem = `*Novo Agendamento - Lava Jato Sol*%0A%0A*Nome:* ${data.nome}%0A*Telefone:* ${data.telefone}%0A*Serviço:* ${servicoNome}%0A*Data:* ${formatDate(data.data)}%0A*Horário:* ${data.horario}%0A%0A*Confirme este agendamento!*`;
 
-    const whatsappUrl = `https://wa.me/5531992675735?text=${mensagem}`;
+    const whatsappUrl = `https://wa.me/5531984601602?text=${mensagem}`;
 
     // Abrir WhatsApp em nova aba
     window.open(whatsappUrl, '_blank');
