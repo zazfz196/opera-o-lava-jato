@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'agendamentos.json');
 const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 const ADMIN_PASSWORD_SALT = 'lava-jato-sol-admin-v1';
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH ||
-  '58601a9d13a38e73e9019a397dda0d89278ae781e580f24c41c25621587b77b4a853479783728c59d65d1432d3cf61c70470b83db79b2b5abe02e7a4fecc2569';
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '';
+const ADMIN_PASSWORD_ITERATIONS = 310000;
 const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
 
 const BASE_SERVICES = {
@@ -208,7 +208,10 @@ function calculateSelection(requestedServices) {
 
 app.post('/api/admin/login', requireSameOrigin, limitLogin, (req, res) => {
   const password = typeof req.body.password === 'string' ? req.body.password : '';
-  const suppliedHash = crypto.scryptSync(password, ADMIN_PASSWORD_SALT, 64);
+  if (!/^[a-f0-9]{64}$/i.test(ADMIN_PASSWORD_HASH)) {
+    return res.status(503).json({ error: 'A senha administrativa ainda não foi configurada.' });
+  }
+  const suppliedHash = crypto.pbkdf2Sync(password, ADMIN_PASSWORD_SALT, ADMIN_PASSWORD_ITERATIONS, 32, 'sha256');
   const expectedHash = Buffer.from(ADMIN_PASSWORD_HASH, 'hex');
   const passwordMatches =
     suppliedHash.length === expectedHash.length &&
@@ -307,7 +310,9 @@ app.post('/api/agendamentos', requireSameOrigin, limitBooking, (req, res) => {
     !selection ||
     !ALLOWED_TIMES.includes(horario) ||
     !/^\d{4}-\d{2}-\d{2}$/.test(String(data || '')) ||
-    Number.isNaN(selectedDate.getTime())
+    Number.isNaN(selectedDate.getTime()) ||
+    selectedDate.toISOString().slice(0, 10) !== data ||
+    selectedDate < new Date(new Date().toDateString())
   ) {
     return res.status(400).json({ error: 'Confira os dados informados e tente novamente.' });
   }

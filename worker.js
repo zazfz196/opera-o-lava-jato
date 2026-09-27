@@ -23,7 +23,8 @@ const COMBO_PRICES = {
 
 const ALLOWED_TIMES = ['12:00', '12:15', '12:30', '12:45'];
 const ALLOWED_STATUSES = ['pending', 'confirmed', 'completed', 'cancelled'];
-const ADMIN_PASSWORD_HASH = '0286dcd705852180134d731ae446ec833d45bec692a9910af39418fe8cf87a2b';
+const ADMIN_PASSWORD_SALT = 'lava-jato-sol-admin-v1';
+const ADMIN_PASSWORD_ITERATIONS = 310000;
 const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
 const encoder = new TextEncoder();
 
@@ -96,9 +97,17 @@ function constantTimeEqual(left, right) {
   return mismatch === 0;
 }
 
-async function sha256Hex(value) {
-  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', encoder.encode(value)));
-  return Array.from(digest, byte => byte.toString(16).padStart(2, '0')).join('');
+async function passwordHash(password) {
+  const key = await crypto.subtle.importKey(
+    'raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']
+  );
+  const bits = await crypto.subtle.deriveBits({
+    name: 'PBKDF2',
+    salt: encoder.encode(ADMIN_PASSWORD_SALT),
+    iterations: ADMIN_PASSWORD_ITERATIONS,
+    hash: 'SHA-256'
+  }, key, 256);
+  return Array.from(new Uint8Array(bits), byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
 async function hmac(value, secret) {
@@ -340,6 +349,8 @@ async function handleApi(request, env, url) {
       !ALLOWED_TIMES.includes(body.horario) ||
       !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
       Number.isNaN(selectedDate.getTime()) ||
+      selectedDate.toISOString().slice(0, 10) !== date ||
+      date < new Date().toISOString().slice(0, 10) ||
       selectedDate.getUTCDay() !== 0
     ) {
       return json({ error: 'Confira os dados informados e tente novamente.' }, 400);
